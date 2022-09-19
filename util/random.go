@@ -9,6 +9,11 @@ import (
 
 const alphabet = "abcdefghijklmnopqrstuvwxyz"
 
+var Currencies = [...]string{
+	"USD", "EUR", "JPY",
+	"VND", "CNY", "RUB",
+}
+
 func init() {
 	rand.Seed(time.Now().UnixNano())
 }
@@ -39,11 +44,7 @@ func RandomMoney() int64 {
 }
 
 func RandomCurrency() string {
-	var currencies = []string{
-		"USD", "EUR", "JPY",
-		"VND", "CNY", "RUB",
-	}
-	return currencies[rand.Intn(len(currencies))]
+	return Currencies[rand.Intn(len(Currencies))]
 }
 
 func RandomCountryCode() sql.NullInt32 {

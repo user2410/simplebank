@@ -6,7 +6,7 @@ import (
 	"fmt"
 )
 
-// All functions of query struct + 1 function to execute money tranfer
+// Store : All functions of query struct + 1 function to execute money transfer
 type Store interface {
 	Querier
 	TransferTx(ctx context.Context, arg TransferTxParams) (TransferTxResult, error)
