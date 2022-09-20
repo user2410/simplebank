@@ -47,8 +47,8 @@ func (server *Server) createUser(ctx *gin.Context) {
 	account, err := server.store.CreateUser(ctx, arg)
 	if err != nil {
 		if dbErr, ok := err.(*pq.Error); ok {
-			switch dbErr.Code.Name() {
-			case "unique_violation", "check_violation":
+			switch dbErr.Code {
+			case "23505", "23514":
 				ctx.JSON(http.StatusForbidden, errorResponse(err))
 				return
 			}
@@ -56,7 +56,7 @@ func (server *Server) createUser(ctx *gin.Context) {
 		ctx.JSON(http.StatusInternalServerError, errorResponse(err))
 		return
 	}
-	
+
 	res := CreateUserResponse{
 		Username:          account.Username,
 		FullName:          account.FullName,

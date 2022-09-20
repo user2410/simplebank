@@ -30,8 +30,8 @@ func (server *Server) createAccount(ctx *gin.Context) {
 	if err != nil {
 		if dbErr, ok := err.(*pq.Error); ok {
 			//log.Println(dbErr.Code.Name(), dbErr.Code.Class())
-			switch dbErr.Code.Name() {
-			case "foreign_key_violation", "unique_violation", "check_violation":
+			switch dbErr.Code {
+			case "23503", "23505", "23514":
 				ctx.JSON(http.StatusForbidden, errorResponse(err))
 				return
 			}
