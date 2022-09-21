@@ -10,35 +10,48 @@ import (
 	"os"
 	"os/signal"
 	db "simplebank/db/sqlc"
+	"simplebank/token"
+	"simplebank/util"
 	"syscall"
 	"time"
 )
 
 // Server serve HTTP requests for banking services
 type Server struct {
-	store  db.Store
-	router *gin.Engine
+	config     util.Config
+	store      db.Store
+	tokenMaker token.Maker
+	router     *gin.Engine
 }
 
 // NewServer creates a new HTTP server instance and setup routing
-func NewServer(store db.Store) *Server {
-	server := &Server{store: store}
-	router := gin.Default()
+func NewServer(config util.Config, store db.Store) (*Server, error) {
+	// Setup token maker
+	tokenMaker, err := token.NewPasetoMaker(config.TokenSymmetricKey)
+	if err != nil {
+		return nil, err
+	}
+
+	server := &Server{
+		config:     config,
+		tokenMaker: tokenMaker,
+		store:      store,
+	}
 
 	if v, ok := binding.Validator.Engine().(*validator.Validate); ok {
 		v.RegisterValidation("currency", validCurrency)
 	}
 
-	router.POST("/users", server.createUser)
+	// Setup routers
+	router := gin.Default()
 
-	router.POST("/accounts", server.createAccount)
-	router.GET("/accounts/:id", server.getAccount)
-	router.GET("/accounts", server.listAccount)
-
-	router.POST("/transfers", server.createTransfer)
+	server.setupUserRoute(router)
+	server.setupAccountRoute(router)
+	server.setupTransferRoute(router)
 
 	server.router = router
-	return server
+
+	return server, nil
 }
 
 // Start runs the HTTP server on given address

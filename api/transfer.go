@@ -8,6 +8,10 @@ import (
 	db "simplebank/db/sqlc"
 )
 
+func (server *Server) setupTransferRoute(router *gin.Engine) {
+	router.POST("/transfers", server.createTransfer)
+}
+
 type transferRequest struct {
 	FromAccountID int64  `json:"from_account_id" binding:"required,min=1"`
 	ToAccountID   int64  `json:"to_account_id" binding:"required,min=1"`
