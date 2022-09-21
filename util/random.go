@@ -8,7 +8,9 @@ import (
 	"time"
 )
 
-const alphabet = "abcdefghijklmnopqrstuvwxyz"
+const ALPHABET = "abcdefghijklmnopqrstuvwxyz"
+
+var ALPHANUMERIC string
 
 var Currencies = [...]string{
 	"USD", "EUR", "JPY",
@@ -17,14 +19,23 @@ var Currencies = [...]string{
 
 func init() {
 	rand.Seed(time.Now().UnixNano())
+
+	const ALPHANUM = ALPHABET + "0123456789"
+	chars := []byte(ALPHANUM)
+	for i := len(ALPHANUM); i > 0; i-- {
+		j := RandomInt(0, int64(i))
+		temp := chars[i]
+		chars[i] = chars[j]
+		chars[j] = temp
+	}
+	ALPHANUMERIC = string(chars)
 }
 
 func RandomInt(min, max int64) int64 {
 	return min + rand.Int63n(max-min+1)
 }
 
-// RandomStr Generate a random string of length n
-func RandomStr(n int) string {
+func randomStr(n int, alphabet string) string {
 	var sb strings.Builder
 	k := len(alphabet)
 
@@ -36,8 +47,16 @@ func RandomStr(n int) string {
 	return sb.String()
 }
 
+func RandomAlphabetStr(n int) string {
+	return randomStr(n, ALPHABET)
+}
+
+func RandomAlphanumericStr(n int) string {
+	return randomStr(n, ALPHANUMERIC)
+}
+
 func RandomOwner() string {
-	return RandomStr(6)
+	return RandomAlphabetStr(6)
 }
 
 func RandomMoney() int64 {
@@ -49,9 +68,9 @@ func RandomCurrency() string {
 }
 
 func RandomCountryCode() sql.NullInt32 {
-	return sql.NullInt32{rand.Int31n(999), true}
+	return sql.NullInt32{Int32: rand.Int31n(999), Valid: true}
 }
 
 func RandomEmail() string {
-	return fmt.Sprintf("%s@gmail.com", RandomStr(8))
+	return fmt.Sprintf("%s@gmail.com", RandomAlphabetStr(8))
 }

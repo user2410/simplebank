@@ -11,7 +11,7 @@ import (
 )
 
 func createRandomUser(t *testing.T) User {
-	hashedPassword, err := util.HashPassword(util.RandomStr(18))
+	hashedPassword, err := util.HashPassword(util.RandomAlphanumericStr(18))
 	require.NoError(t, err)
 
 	args := CreateUserParams{

@@ -20,7 +20,7 @@ import (
 )
 
 func randomUser(t *testing.T) (user db.User, password string) {
-	password = util.RandomStr(8)
+	password = util.RandomAlphanumericStr(8)
 	hashedPassword, err := util.HashPassword(password)
 	require.NoError(t, err)
 
