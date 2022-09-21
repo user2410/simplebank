@@ -22,7 +22,7 @@ func init() {
 
 	const ALPHANUM = ALPHABET + "0123456789"
 	chars := []byte(ALPHANUM)
-	for i := len(ALPHANUM); i > 0; i-- {
+	for i := len(ALPHANUM) - 1; i > 0; i-- {
 		j := RandomInt(0, int64(i))
 		temp := chars[i]
 		chars[i] = chars[j]
