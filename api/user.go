@@ -4,9 +4,9 @@ import (
 	"database/sql"
 	"github.com/gin-gonic/gin"
 	"github.com/lib/pq"
+	db "github.com/user2410/simplebank/db/sqlc"
+	"github.com/user2410/simplebank/util"
 	"net/http"
-	db "simplebank/db/sqlc"
-	"simplebank/util"
 	"time"
 )
 

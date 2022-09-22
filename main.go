@@ -4,10 +4,10 @@ import (
 	"context"
 	"database/sql"
 	_ "github.com/lib/pq"
+	"github.com/user2410/simplebank/api"
+	db "github.com/user2410/simplebank/db/sqlc"
+	"github.com/user2410/simplebank/util"
 	"log"
-	"simplebank/api"
-	db "simplebank/db/sqlc"
-	"simplebank/util"
 	"time"
 )
 

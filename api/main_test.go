@@ -3,9 +3,9 @@ package api
 import (
 	"github.com/gin-gonic/gin"
 	"github.com/stretchr/testify/require"
+	db "github.com/user2410/simplebank/db/sqlc"
+	"github.com/user2410/simplebank/util"
 	"os"
-	db "simplebank/db/sqlc"
-	"simplebank/util"
 	"testing"
 	"time"
 )

@@ -7,11 +7,11 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/golang/mock/gomock"
 	"github.com/stretchr/testify/require"
+	mockdb "github.com/user2410/simplebank/db/mock"
+	db "github.com/user2410/simplebank/db/sqlc"
+	"github.com/user2410/simplebank/util"
 	"net/http"
 	"net/http/httptest"
-	mockdb "simplebank/db/mock"
-	db "simplebank/db/sqlc"
-	"simplebank/util"
 	"testing"
 )
 

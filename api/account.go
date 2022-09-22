@@ -5,9 +5,9 @@ import (
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/lib/pq"
+	db "github.com/user2410/simplebank/db/sqlc"
+	"github.com/user2410/simplebank/token"
 	"net/http"
-	db "simplebank/db/sqlc"
-	"simplebank/token"
 )
 
 type createAccountRequest struct {

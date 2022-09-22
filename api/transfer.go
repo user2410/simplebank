@@ -4,9 +4,9 @@ import (
 	"database/sql"
 	"fmt"
 	"github.com/gin-gonic/gin"
+	db "github.com/user2410/simplebank/db/sqlc"
+	"github.com/user2410/simplebank/token"
 	"net/http"
-	db "simplebank/db/sqlc"
-	"simplebank/token"
 )
 
 type transferRequest struct {

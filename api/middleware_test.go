@@ -4,9 +4,9 @@ import (
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/stretchr/testify/require"
+	"github.com/user2410/simplebank/token"
 	"net/http"
 	"net/http/httptest"
-	"simplebank/token"
 	"testing"
 	"time"
 )

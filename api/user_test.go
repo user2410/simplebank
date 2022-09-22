@@ -9,13 +9,13 @@ import (
 	"github.com/golang/mock/gomock"
 	"github.com/lib/pq"
 	"github.com/stretchr/testify/require"
+	mockdb "github.com/user2410/simplebank/db/mock"
+	db "github.com/user2410/simplebank/db/sqlc"
+	"github.com/user2410/simplebank/util"
 	"io"
 	"net/http"
 	"net/http/httptest"
 	"reflect"
-	mockdb "simplebank/db/mock"
-	db "simplebank/db/sqlc"
-	"simplebank/util"
 	"testing"
 )
 

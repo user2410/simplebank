@@ -3,9 +3,9 @@ package db
 import (
 	"database/sql"
 	_ "github.com/lib/pq"
+	"github.com/user2410/simplebank/util"
 	"log"
 	"os"
-	"simplebank/util"
 	"testing"
 )
 
