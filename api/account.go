@@ -2,20 +2,15 @@ package api
 
 import (
 	"database/sql"
+	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/lib/pq"
 	"net/http"
 	db "simplebank/db/sqlc"
+	"simplebank/token"
 )
 
-func (server *Server) setupAccountRoute(router *gin.Engine) {
-	router.POST("/accounts", server.createAccount)
-	router.GET("/accounts/:id", server.getAccount)
-	router.GET("/accounts", server.listAccount)
-}
-
 type createAccountRequest struct {
-	Owner    string `json:"owner" binding:"required"`
 	Currency string `json:"currency" binding:"required,currency"`
 }
 
@@ -26,10 +21,11 @@ func (server *Server) createAccount(ctx *gin.Context) {
 		return
 	}
 
+	authPayload := ctx.MustGet(AuthorizationPayloadKey).(*token.Payload)
 	arg := db.CreateAccountParams{
 		Balance:  0,
 		Currency: req.Currency,
-		Owner:    req.Owner,
+		Owner:    authPayload.Username,
 	}
 
 	account, err := server.store.CreateAccount(ctx, arg)
@@ -68,6 +64,13 @@ func (server *Server) getAccount(ctx *gin.Context) {
 		ctx.JSON(http.StatusInternalServerError, errorResponse(err))
 		return
 	}
+
+	authPayload := ctx.MustGet(AuthorizationPayloadKey).(*token.Payload)
+	if acc.Owner != authPayload.Username {
+		ctx.JSON(http.StatusUnauthorized, errorResponse(fmt.Errorf("forbidden account access")))
+		return
+	}
+
 	ctx.JSON(http.StatusOK, acc)
 }
 
@@ -83,7 +86,9 @@ func (server *Server) listAccount(ctx *gin.Context) {
 		return
 	}
 
+	authPayload := ctx.MustGet(AuthorizationPayloadKey).(*token.Payload)
 	accounts, err := server.store.ListAccounts(ctx, db.ListAccountsParams{
+		Owner:  authPayload.Username,
 		Limit:  req.PageSize,
 		Offset: (req.PageID - 1) * req.PageSize,
 	})

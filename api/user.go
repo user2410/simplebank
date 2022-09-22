@@ -10,11 +10,6 @@ import (
 	"time"
 )
 
-func (server *Server) setupUserRoute(router *gin.Engine) {
-	router.POST("/users", server.createUser)
-	router.POST("/users/login", server.loginUser)
-}
-
 type createUserRequest struct {
 	Username string `json:"username" binding:"required,alphanum"`
 	Password string `json:"password" binding:"required,min=6"`

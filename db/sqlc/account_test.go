@@ -56,6 +56,28 @@ func TestQueries_GetAccount(t *testing.T) {
 	require.NoError(t, testQueries.DeleteAccount(context.Background(), acc1.ID))
 }
 
+func TestQueries_ListAccounts(t *testing.T) {
+	var lastAccount Account
+	for i := 0; i < 10; i++ {
+		lastAccount = createRandomAccount(t)
+	}
+
+	arg := ListAccountsParams{
+		Owner:  lastAccount.Owner,
+		Limit:  5,
+		Offset: 0,
+	}
+
+	accs, err := testQueries.ListAccounts(context.Background(), arg)
+	require.NoError(t, err)
+	require.NotEmpty(t, accs)
+
+	for _, acc := range accs {
+		require.NotEmpty(t, acc)
+		require.Equal(t, lastAccount.Owner, acc.Owner)
+	}
+}
+
 func TestQueries_UpdateAccount(t *testing.T) {
 	acc1 := createRandomAccount(t)
 

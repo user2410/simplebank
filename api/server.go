@@ -42,16 +42,25 @@ func NewServer(config util.Config, store db.Store) (*Server, error) {
 		v.RegisterValidation("currency", validCurrency)
 	}
 
-	// Setup routers
+	server.setupRouter()
+	return server, nil
+}
+
+func (server *Server) setupRouter() {
 	router := gin.Default()
 
-	server.setupUserRoute(router)
-	server.setupAccountRoute(router)
-	server.setupTransferRoute(router)
+	router.POST("/users", server.createUser)
+	router.POST("/users/login", server.loginUser)
+
+	authRoutes := router.Group("/").Use(authMiddleware(server.tokenMaker))
+
+	authRoutes.POST("/accounts", server.createAccount)
+	authRoutes.GET("/accounts/:id", server.getAccount)
+	authRoutes.GET("/accounts", server.listAccount)
+
+	authRoutes.POST("/transfers", server.createTransfer)
 
 	server.router = router
-
-	return server, nil
 }
 
 // Start runs the HTTP server on given address
