@@ -1,4 +1,4 @@
-DB_SOURCE=postgresql://root:mysecret@localhost:5432/simplebank?sslmode=disable
+DB_SOURCE=postgresql://root:wIDf9SfNRYQbkQjd5Gof@simplebank.cbtafi1aarj8.us-east-1.rds.amazonaws.com:5432/simplebank?sslmode=disable
 DOCKER_NETWORK=bank-network
 
 runpostgres:
