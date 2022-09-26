@@ -11,6 +11,8 @@ FROM alpine:3.16
 WORKDIR /app
 COPY start.sh .
 COPY wait-for.sh .
+RUN chmod +x ./start.sh
+RUN chmod +x ./wait-for.sh
 COPY --from=builder /app/main .
 COPY --from=builder /app/migrate ./migrate
 COPY db/migration ./migration
